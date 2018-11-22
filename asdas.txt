@@ -1,0 +1,46 @@
+using UnityEngine;
+
+public class MovimientoTank : MonoBehaviour {
+	Rigidbody rb;
+	public string numero = "1";
+	float  ejeHorizontal;
+	float  ejeVertical;
+	public float velocidad = 20f;
+	public float velocidadRotacion = 5f;
+
+	// Use this for initialization
+	void Start () {
+		rb = GetComponent<Rigidbody> ();		
+	}
+	
+	// Update is called once per frame
+	void Update () {
+		ejeHorizontal = Input.GetAxis ("Horizontal"+numero);
+		ejeVertical = Input.GetAxis ("Vertical"+numero);
+
+		//Debug.Log ("Vertical" + ejeVertical + " Horizontal: " + ejeHorizontal);
+	}
+		
+
+	void  FixedUpdate(){
+		Mover ();
+		Rotar ();
+	}
+
+	void Rotar(){
+		float giro = ejeHorizontal * velocidadRotacion * Time.deltaTime;
+
+		Quaternion rotacion  = Quaternion.Euler (0f, giro, 0f);
+
+		rb.MoveRotation (transform.rotation * rotacion);
+	}
+		
+
+
+
+
+	void  Mover(){
+		Vector3 posicionMovimiento = transform.forward *velocidad *ejeVertical * Time.deltaTime;
+		rb.MovePosition (transform.position + posicionMovimiento);
+	}	
+}
